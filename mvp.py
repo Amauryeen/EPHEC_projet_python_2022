@@ -65,7 +65,7 @@ def main():
     counter = 0
     while counter == 0:
         response = input(
-            "Souhaitez-vous inscrire tous les membres au repas?   [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
+            "Souhaitez-vous inscrire tous les membres au repas?    [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
         if response.lower() == "o":
             for v in kot.koters:
                 if v == cook:
@@ -79,8 +79,7 @@ def main():
 
                 counter = 0
                 while counter == 0:
-                    response = input(
-                        f"Faut-il inscrire \"{v.name}\" au repas?   [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
+                    response = input(f"Souhaitez-vous inscrire \"{v.name}\" au repas?    [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
                     counter = 0
                     if response.lower() == "o":
                         inscription.append(v)
