@@ -61,19 +61,41 @@ def main():
     print(f"============================================\n{cook.name} est le cuisinier de ce repas.\n============================================\n")
 
     inscription = []
-    for v in kot.koters:
-        if v == cook:
-            continue
 
-        counter = 0
-        while counter == 0:
-            response = input(f"Faut-il inscrire {v.name} au repas?    [O + Entrée] Oui   [N + Entrée] Non : ")
-            counter = 0
-            if response.lower() == "o":
+    counter = 0
+    while counter == 0:
+        response = input(
+            "Souhaitez-vous inscrire tous les membres au repas?   [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
+        if response.lower() == "o":
+            for v in kot.koters:
+                if v == cook:
+                    continue
                 inscription.append(v)
-                counter = 1
-            if response.lower() == "n":
-                counter = 1
+            counter = 1
+        if response.lower() == "n":
+            for v in kot.koters:
+                if v == cook:
+                    continue
+
+                counter = 0
+                while counter == 0:
+                    response = input(
+                        f"Faut-il inscrire \"{v.name}\" au repas?   [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
+                    counter = 0
+                    if response.lower() == "o":
+                        inscription.append(v)
+                        counter = 1
+                    if response.lower() == "n":
+                        counter = 1
+
+                    if response.lower() == "q":
+                        print("Fermeture du programme.")
+                        exit()
+            counter = 1
+
+        if response.lower() == "q":
+            print("Fermeture du programme.")
+            exit()
 
     for v in inscription:
         v.balance -= argument.price
