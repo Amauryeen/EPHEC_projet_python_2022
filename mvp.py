@@ -40,9 +40,9 @@ def print_koters_balance(kot):
 
 
 def main():
-    args = argparse.ArgumentParser(description="Permet de calculer les dépenses de plusieurs membres d'un kot et ce que chacun doit au cuisinier.",
+    args = argparse.ArgumentParser(description="Permet de calculer le solde dû de plusieurs membres à un cuisinier.",
                                    epilog=f"example: {os.path.basename(__file__)} \"Sam Gratte\" \"Ray Zin\" \"Jean Tille\" -k \"Notre kot\" -p 3")
-    args.add_argument("names", metavar="name", help="prénom et nom de chaque membre du kot au format \"Prénom Nom\"", nargs="+")
+    args.add_argument("names", help="prénom et nom de chaque membre du kot au format \"Prénom Nom\"", nargs="+")
     args.add_argument("-k", "--kot_name", help="nom du kot", required=True)
     args.add_argument("-p", "--price", help="prix positif d'un repas unitaire (euros)", type=float, required=True)
     argument = args.parse_args()
@@ -64,6 +64,9 @@ def main():
 
     counter = 0
     while counter == 0:
+        if len(kot.koters) == 1:
+            break
+
         response = input(
             "Souhaitez-vous inscrire tous les membres au repas?    [O + Entrée] Oui   [N + Entrée] Non   [Q + Entrée] Quitter le programme : ")
         if response.lower() == "o":
@@ -71,7 +74,7 @@ def main():
                 if v == cook:
                     continue
                 inscription.append(v)
-            counter = 1
+            break
         if response.lower() == "n":
             for v in kot.koters:
                 if v == cook:
@@ -83,14 +86,15 @@ def main():
                     counter = 0
                     if response.lower() == "o":
                         inscription.append(v)
-                        counter = 1
+                        break
+
                     if response.lower() == "n":
-                        counter = 1
+                        break
 
                     if response.lower() == "q":
                         print("Fermeture du programme.")
                         exit()
-            counter = 1
+            break
 
         if response.lower() == "q":
             print("Fermeture du programme.")
