@@ -41,7 +41,7 @@ def print_koters_balance(kot):
 
 def main():
     args = argparse.ArgumentParser(description="Permet de calculer les dépenses de plusieurs membres d'un kot et ce que chacun doit au cuisinier.",
-                                   epilog=f"exemple: {os.path.basename(__file__)} \"Sam Gratte\" \"Ray Zin\" \"Jean Tille\" -k \"Notre kot\" -p 3")
+                                   epilog=f"example: {os.path.basename(__file__)} \"Sam Gratte\" \"Ray Zin\" \"Jean Tille\" -k \"Notre kot\" -p 3")
     args.add_argument("names", metavar="name", help="prénom et nom de chaque membre du kot au format \"Prénom Nom\"", nargs="+")
     args.add_argument("-k", "--kot_name", help="nom du kot", required=True)
     args.add_argument("-p", "--price", help="prix d'un repas unitaire (euros)", type=float, required=True)
