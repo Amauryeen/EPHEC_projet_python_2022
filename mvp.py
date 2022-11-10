@@ -44,15 +44,18 @@ def main():
                                    epilog=f"example: {os.path.basename(__file__)} \"Sam Gratte\" \"Ray Zin\" \"Jean Tille\" -k \"Notre kot\" -p 3")
     args.add_argument("names", metavar="name", help="prénom et nom de chaque membre du kot au format \"Prénom Nom\"", nargs="+")
     args.add_argument("-k", "--kot_name", help="nom du kot", required=True)
-    args.add_argument("-p", "--price", help="prix d'un repas unitaire (euros)", type=float, required=True)
+    args.add_argument("-p", "--price", help="prix positif d'un repas unitaire (euros)", type=float, required=True)
     argument = args.parse_args()
     kot = Kot(argument.kot_name)
+
+    if argument.price < 0:
+        raise Exception(f"Le prix est un nombre négatif.")
 
     for v in argument.names:
         if " " in v:
             Person(v)
             continue
-        raise Exception(f"Chaque membre du kot doit être composé d'un prénom et d'un nom, et '{v}' ne l'est pas.")
+        raise Exception(f"\"{v}\" n'est pas composé d'un prénom et d'un nom.")
 
     cook = get_cook(kot.koters)
     print(f"============================================\n{cook.name} est le cuisinier de ce repas.\n============================================\n")
@@ -61,11 +64,16 @@ def main():
     for v in kot.koters:
         if v == cook:
             continue
-        response = input(f"Faut-il inscrire {v.name} au repas?    [O + Entrée] Oui   [Entrée] Non : ")
-        if response.lower() == "o":
-            inscription.append(v)
-        else:
-            continue
+
+        counter = 0
+        while counter == 0:
+            response = input(f"Faut-il inscrire {v.name} au repas?    [O + Entrée] Oui   [N + Entrée] Non : ")
+            counter = 0
+            if response.lower() == "o":
+                inscription.append(v)
+                counter = 1
+            if response.lower() == "n":
+                counter = 1
 
     for v in inscription:
         v.balance -= argument.price
@@ -88,5 +96,6 @@ if __name__ == "__main__":
     import random
     import argparse
     import os
+    import math
 
     main()
