@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from tkinter.messagebox import showinfo
 
 # root configuration
 root = Tk()
@@ -10,23 +9,26 @@ root.attributes('-alpha', 0.97)
 
 
 def add_koter():
-    msg = f'You entered: {koters_name.get()}'
     koters_list.append(koters_name.get())
-    showinfo(title='Information', message=f"{msg} {koters_list}")
+    grid_koters = Label(kot_frame, text=koters_name.get())
+    grid_koters.pack()
 
 
 def create_kot():
     hide_all_frames()
-    kot_config.pack(fill="both", expand=1)
+    kot_frame.pack(fill="both", expand=1)
 
 
 def hide_all_frames():
-    kot_config.pack_forget()
+    kot_frame.pack_forget()
     welcome_label.pack_forget()
+    welcome_button.pack_forget()
 
 
 welcome_label = Label(root, text="Bienvenue sur kotcount")
 welcome_label.pack()
+welcome_button = ttk.Button(root, text="Créer un kot", command=create_kot)
+welcome_button.pack()
 # create a menu
 menubar = Menu(root)
 root.config(menu=menubar)
@@ -36,7 +38,7 @@ kot_menu = Menu(menubar, tearoff=0)
 # add a menu item to the menu
 file_menu.add_command(label='Exit', command=root.destroy)
 # add the menu to the menubar
-menubar.add_cascade(label="File", menu=file_menu)
+menubar.add_cascade(label="App", menu=file_menu)
 menubar.add_cascade(label="Kot", menu=kot_menu)
 kot_menu.add_command(label="Créer le kot", command=create_kot)
 # window size
@@ -58,13 +60,14 @@ koters_name = StringVar()
 koters_list = []
 
 
-kot_config = Frame(root)
-name_label = Label(kot_config, text="Ajoute un koteur")
+kot_frame = Frame(root)
+list_koter_frame = Frame(kot_frame)
+name_label = Label(kot_frame, text="Ajoute un koteur")
 name_label.pack()
-name_entry = Entry(kot_config, textvariable=koters_name)
+name_entry = Entry(kot_frame, textvariable=koters_name)
 name_entry.pack()
 
-add_button = ttk.Button(kot_config, text="Add", command=add_koter)
+add_button = ttk.Button(kot_frame, text="Ajouter", command=add_koter)
 add_button.pack(pady=10)
 
 root.mainloop()
