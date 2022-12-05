@@ -41,8 +41,8 @@ def print_koters_balance(kot):
 
 def main():
     args = argparse.ArgumentParser(description="Permet de calculer le solde dû de plusieurs membres à un cuisinier.",
-                                   epilog=f"example: {os.path.basename(__file__)} \"Sam Gratte\" \"Ray Zin\" \"Jean Tille\" -k \"Notre kot\" -p 3")
-    args.add_argument("names", help="prénom et nom de chaque membre du kot au format \"Prénom Nom\"", nargs="+")
+                                   epilog=f"example: {os.path.basename(__file__)} Sam Ray Jean -k Notre kot -p 3")
+    args.add_argument("names", help="Nom des membres du kot", nargs="+")
     args.add_argument("-k", "--kot_name", help="nom du kot", required=True)
     args.add_argument("-p", "--price", help="prix positif d'un repas unitaire (euros)", type=float, required=True)
     argument = args.parse_args()
@@ -52,10 +52,7 @@ def main():
         raise Exception(f"Le prix est un nombre négatif.")
 
     for v in argument.names:
-        if " " in v:
-            Person(v)
-            continue
-        raise Exception(f"\"{v}\" n'est pas composé d'un prénom et d'un nom.")
+        Person(v)
 
     cook = get_cook(kot.koters)
     print(f"============================================\n{cook.name} est le cuisinier de ce repas.\n============================================\n")
