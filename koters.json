@@ -5,23 +5,27 @@
         "Max",
         "Sam",
         "Gaetan",
-        "Basil"
+        "Basil",
+        "Amaury"
     ],
     "koters_balance": [
         {
-            "Martin": -9
+            "Martin": -18
         },
         {
-            "Max": 6
+            "Max": -6
         },
         {
-            "Sam": 3
+            "Sam": 12
         },
         {
-            "Gaetan": -3
+            "Gaetan": 9
         },
         {
-            "Basil": 3
+            "Basil": -6
+        },
+        {
+            "Amaury": 9
         }
     ],
     "common_pot": 0

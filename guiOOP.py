@@ -47,7 +47,7 @@ class App(Tk):
         self.meal_menu.add_command(label="Ouvrir", command=self.create_meal_frame)
         self.menubar.add_cascade(label="Liste repas", menu=self.list_meal_menu)
         self.list_meal_menu.add_command(label="Ouvrir", command=self.create_list_meal_frame)
-        self.menubar.add_cascade(label="Info",menu=self.info_menu)
+        self.menubar.add_cascade(label="Info", menu=self.info_menu)
         self.info_menu.add_command(label="Ouvrir", command=self.create_info_frame)
 
     def create_kot_frame(self):
@@ -69,7 +69,7 @@ class App(Tk):
 
     def create_list_meal_frame(self):
         self.hide_all_frames()
-        list_meal_frame = ListMealFrame(self)
+        list_meal_frame = ListMealFrame(self, None)
         list_meal_frame.pack()
         self.create_menu()
 
@@ -194,22 +194,28 @@ class MealFrame(ttk.Frame):
             Label(self, text="S'inscrire : ", font='Calibri 14 underline').pack()
             for v in data["koters_list"]:
                 self.dict_inscription[v] = IntVar()
-                ttk.Checkbutton(self, text=v, variable=self.dict_inscription[v], offvalue=0, onvalue=1).pack()
+                ttk.Checkbutton(self, text=v, variable=self.dict_inscription[v], offvalue=0, onvalue=1).pack(anchor="w",
+                                                                                                             padx=50)
             ttk.Button(self, text="Finaliser le repas", command=self.get_inscription).pack(pady=5)
 
     def get_inscription(self):
+        copy_dict_inscription = {}
         if self.selected_price.get() <= 0:
-            showinfo(title="Attention", message="le prix du repas doivent être des entiers positifs")
+            showinfo(title="Attention", message="le prix du repas doit être un entiers positifs")
         else:
             self.dict_inscription[self.selected_cook.get()] = 0
+            copy_dict_inscription[self.selected_cook.get()] = 0
             for v, name in zip(self.dict_inscription.values(), self.dict_inscription.keys()):
                 if self.selected_cook.get() == name:
                     continue
                 elif v.get() == 1:
                     self.dict_inscription[name] = v.get() * self.selected_price.get()
                     self.dict_inscription[self.selected_cook.get()] -= self.selected_price.get()
+                    copy_dict_inscription[name] = v.get()
                 else:
                     self.dict_inscription[name] = v.get()
+                    copy_dict_inscription[name] = v.get()
+
             with open("koters.json", "r") as json_r:
                 data = json.load(json_r)
                 with open("koters.json", "w") as json_w:
@@ -221,13 +227,14 @@ class MealFrame(ttk.Frame):
                     json.dump(data, json_w, indent=4)
             app.hide_all_frames()
             app.create_menu()
-            list_meal_frame = ListMealFrame(app)
+            list_meal_frame = ListMealFrame(app, dict(copy_dict_inscription))
             list_meal_frame.pack()
 
 
 class ListMealFrame(ttk.Frame):
-    def __init__(self, container):
+    def __init__(self, container, list_inscription):
         super().__init__(container)
+        self.inscription = list_inscription
         self.create_widgets()
 
     def create_widgets(self):
@@ -237,12 +244,18 @@ class ListMealFrame(ttk.Frame):
         Label(self, text='Prix total').grid(row=0, column=3, padx=10)
         Label(self, text='Prix Course').grid(row=0, column=4, padx=10)
         Label(self, text='Calcule').grid(row=0, column=5)
-
         # body
         with open("koters.json", "r") as json_f:
             data = json.load(json_f)
-            for i in enumerate(data["koters_list"]):
-                Label(self, text=str(i[0]+1)).grid(row=i[0]+1, column=0)
+            for i, v in enumerate(data["koters_balance"]):
+                name = list(v.keys())[0]
+                Label(self, text=name).grid(row=i + 1, column=0)
+                if self.inscription is None:
+                    continue
+                elif self.inscription[name] == 1:
+                    Label(self, text="Oui").grid(row=i + 1, column=1)
+                elif self.inscription[name] == 0:
+                    ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
 
 
 class InfoFrame(ttk.Frame):
@@ -260,10 +273,10 @@ class InfoFrame(ttk.Frame):
                 name = list(v.keys())[0]
                 balance = list(v.values())[0]
                 if balance < 0:
-                    Label(self, text=f"{name} €", foreground='red').grid(row=i + 1, column=1)
+                    Label(self, text=f"{name}").grid(row=i + 1, column=1)
                     Label(self, text=f"{balance} €", foreground='red').grid(row=i + 1, column=2)
                 else:
-                    Label(self, text=f"{name} €", foreground='green').grid(row=i + 1, column=1)
+                    Label(self, text=f"{name}").grid(row=i + 1, column=1)
                     Label(self, text=f"{balance} €", foreground='green').grid(row=i + 1, column=2)
             Label(self, text=f"{data['common_pot']} €").grid(row=4, column=3)
 
