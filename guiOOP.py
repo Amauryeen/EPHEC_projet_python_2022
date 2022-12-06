@@ -134,6 +134,7 @@ class KotFrame(ttk.Frame):
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
             data["koters_list"].append(koter)
+            data["koters_balance"].append({koter: 0})
             json.dump(data, w_json, indent=4)
 
     def create_kot(self):
@@ -209,6 +210,15 @@ class MealFrame(ttk.Frame):
                     self.dict_inscription[self.selected_cook.get()] -= self.selected_price.get()
                 else:
                     self.dict_inscription[name] = v.get()
+            with open("koters.json", "r") as json_r:
+                data = json.load(json_r)
+                with open("koters.json", "w") as json_w:
+                    for v in data["koters_balance"]:
+                        name = list(v.keys())[0]
+                        balance = list(v.values())[0]
+                        balance += self.dict_inscription[name]
+                        v.update({name: balance})
+                    json.dump(data, json_w, indent=4)
             app.hide_all_frames()
             app.create_menu()
             list_meal_frame = ListMealFrame(app)
@@ -229,10 +239,10 @@ class ListMealFrame(ttk.Frame):
         Label(self, text='Calcule').grid(row=0, column=5)
 
         # body
-        Label(self, text='0').grid(row=1, column=0)
-        Label(self, text='1').grid(row=2, column=0)
-        Label(self, text='2').grid(row=3, column=0)
-        Label(self, text='3').grid(row=4, column=0)
+        with open("koters.json", "r") as json_f:
+            data = json.load(json_f)
+            for i in enumerate(data["koters_list"]):
+                Label(self, text=str(i[0]+1)).grid(row=i[0]+1, column=0)
 
 
 class InfoFrame(ttk.Frame):
@@ -241,7 +251,21 @@ class InfoFrame(ttk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Label(self, text="Koteurs : ").grid(row=0, column=0)
+        Label(self, text='Koteur', font="Calibri 14 underline").grid(row=0, column=1, padx=10)
+        Label(self, text="Solde", font="Calibri 14 underline").grid(row=0, column=2, padx=10)
+        Label(self, text="Pot Commun", font="Calibri 14 underline").grid(row=3, column=3, padx=10)
+        with open("koters.json", "r") as json_f:
+            data = json.load(json_f)
+            for i, v in enumerate(data["koters_balance"]):
+                name = list(v.keys())[0]
+                balance = list(v.values())[0]
+                if balance < 0:
+                    Label(self, text=f"{name} €", foreground='red').grid(row=i + 1, column=1)
+                    Label(self, text=f"{balance} €", foreground='red').grid(row=i + 1, column=2)
+                else:
+                    Label(self, text=f"{name} €", foreground='green').grid(row=i + 1, column=1)
+                    Label(self, text=f"{balance} €", foreground='green').grid(row=i + 1, column=2)
+            Label(self, text=f"{data['common_pot']} €").grid(row=4, column=3)
 
 
 if __name__ == "__main__":

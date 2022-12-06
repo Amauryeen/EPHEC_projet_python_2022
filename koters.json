@@ -1,11 +1,28 @@
 {
     "kot_name": "Noobsquad",
     "koters_list": [
+        "Martin",
+        "Max",
+        "Sam",
         "Gaetan",
-        "Amaury",
-        "Mounir",
-        "Sade",
-        "Lyory"
+        "Basil"
+    ],
+    "koters_balance": [
+        {
+            "Martin": -9
+        },
+        {
+            "Max": 6
+        },
+        {
+            "Sam": 3
+        },
+        {
+            "Gaetan": -3
+        },
+        {
+            "Basil": 3
+        }
     ],
     "common_pot": 0
 }
