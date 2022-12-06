@@ -1,9 +1,11 @@
 {
-    "kot_name": "",
+    "kot_name": "Noobsquad",
     "koters_list": [
         "Gaetan",
         "Amaury",
         "Mounir",
-        "Sade"
-    ]
+        "Sade",
+        "Lyory"
+    ],
+    "common_pot": 0
 }
