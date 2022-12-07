@@ -200,21 +200,23 @@ class MealFrame(ttk.Frame):
 
     def get_inscription(self):
         copy_dict_inscription = {}
+        is_cook_inscription = self.dict_inscription[self.selected_cook.get()].get()
         if self.selected_price.get() <= 0:
             showinfo(title="Attention", message="le prix du repas doit être un entiers positifs")
         else:
             self.dict_inscription[self.selected_cook.get()] = 0
-            copy_dict_inscription[self.selected_cook.get()] = 0
+            copy_dict_inscription[self.selected_cook.get()] = [is_cook_inscription, 'cook']
             for v, name in zip(self.dict_inscription.values(), self.dict_inscription.keys()):
                 if self.selected_cook.get() == name:
+
                     continue
                 elif v.get() == 1:
                     self.dict_inscription[name] = v.get() * self.selected_price.get()
                     self.dict_inscription[self.selected_cook.get()] -= self.selected_price.get()
-                    copy_dict_inscription[name] = v.get()
+                    copy_dict_inscription[name] = [v.get(), 'not_cook']
                 else:
                     self.dict_inscription[name] = v.get()
-                    copy_dict_inscription[name] = v.get()
+                    copy_dict_inscription[name] = [v.get(), 'not_cook']
 
             with open("koters.json", "r") as json_r:
                 data = json.load(json_r)
@@ -252,9 +254,14 @@ class ListMealFrame(ttk.Frame):
                 Label(self, text=name).grid(row=i + 1, column=0)
                 if self.inscription is None:
                     continue
-                elif self.inscription[name] == 1:
+                elif 'cook' in self.inscription[name]:
+                    if self.inscription[name][0] == 1:
+                        Label(self, text="Oui").grid(row=i + 1, column=1)
+                    else:
+                        ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
+                elif self.inscription[name][0] == 1:
                     Label(self, text="Oui").grid(row=i + 1, column=1)
-                elif self.inscription[name] == 0:
+                elif self.inscription[name][0] == 0:
                     ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
 
 
