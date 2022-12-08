@@ -1,3 +1,4 @@
+import _tkinter
 from tkinter import *
 from tkinter import ttk
 from kotcount import *
@@ -199,8 +200,13 @@ class MealFrame(ttk.Frame):
             ttk.Button(self, text="Finaliser le repas", command=self.get_inscription).pack(pady=5)
 
     def get_inscription(self):
-        if self.selected_cook.get() is None or self.selected_meal.get() is None or self.selected_price is None:
+        try:
+            if self.selected_cook.get() == '' or self.selected_meal.get() == '' or self.selected_price.get() == "":
+                showinfo(title="Attention", message="Veuillez remplir toutes les cases")
+                return ""
+        except _tkinter.TclError:
             showinfo(title="Attention", message="Veuillez remplir toutes les cases")
+            return ""
         copy_dict_inscription = {}
         is_cook_inscription = self.dict_inscription[self.selected_cook.get()].get()
         if self.selected_price.get() <= 0:
