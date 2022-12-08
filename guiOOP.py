@@ -45,7 +45,7 @@ class App(Tk):
         self.file_menu.add_command(label="Quitter", command=self.destroy)
 
         self.menubar.add_cascade(label="Kot", menu=self.kot_menu)
-        self.kot_menu.add_command(label="Créer", command=self.create_kot_frame)
+        self.kot_menu.add_command(label="Modifier", command=self.create_kot_frame)
 
         self.menubar.add_cascade(label="Repas", menu=self.meal_menu)
         self.meal_menu.add_command(label="Créer", command=self.create_meal_frame)
