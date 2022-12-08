@@ -9,7 +9,7 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         # configure the window
-        self.title("kotcount")
+        self.title("KotCount")
         self.minsize(width=400, height=400)
         self.create_welcome_frame()
 
@@ -39,16 +39,19 @@ class App(Tk):
         self.list_meal_menu = Menu(self.menubar, tearoff=0)
         self.info_menu = Menu(self.menubar, tearoff=0)
         self.config(menu=self.menubar)
-        self.file_menu.add_command(label="Acceuil", command=self.create_welcome_frame)
-        self.file_menu.add_command(label='Exit', command=self.destroy)
-        self.menubar.add_cascade(label="App", menu=self.file_menu)
+
+        self.menubar.add_cascade(label="Application", menu=self.file_menu)
+        self.file_menu.add_command(label="Accueil", command=self.create_welcome_frame)
+        self.file_menu.add_command(label="Quitter l'application", command=self.destroy)
+
         self.menubar.add_cascade(label="Kot", menu=self.kot_menu)
-        self.kot_menu.add_command(label="Créer le kot", command=self.create_kot_frame)
+        self.kot_menu.add_command(label="Créer", command=self.create_kot_frame)
+
         self.menubar.add_cascade(label="Repas", menu=self.meal_menu)
-        self.meal_menu.add_command(label="Ouvrir", command=self.create_meal_frame)
-        self.menubar.add_cascade(label="Liste repas", menu=self.list_meal_menu)
-        self.list_meal_menu.add_command(label="Ouvrir", command=self.create_list_meal_frame)
-        self.menubar.add_cascade(label="Info", menu=self.info_menu)
+        self.meal_menu.add_command(label="Créer", command=self.create_meal_frame)
+        self.meal_menu.add_command(label="Voir l'historique", command=self.create_list_meal_frame)
+
+        self.menubar.add_cascade(label="Information", menu=self.info_menu)
         self.info_menu.add_command(label="Ouvrir", command=self.create_info_frame)
 
     def create_kot_frame(self):
