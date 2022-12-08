@@ -3,3 +3,9 @@
 
 # Python Virtual Environment
 venv
+
+# Cache local Python
+__pycache__
+
+# Fichier de données
+koters.json
