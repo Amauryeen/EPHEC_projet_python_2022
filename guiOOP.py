@@ -1,6 +1,7 @@
 import _tkinter
 from tkinter import *
 from tkinter import ttk
+from kotcount import *
 from tkinter.messagebox import showinfo
 
 
@@ -11,6 +12,14 @@ class App(Tk):
         self.title("KotCount")
         self.minsize(width=400, height=400)
         self.create_welcome_frame()
+
+    @staticmethod
+    def get_kot(self):
+        with open("koters.json", 'r') as json_r:
+            data = json.load(json_r)
+            kot = Kot(data["kot_name"])
+            for person in data["koters_list"]:
+                Person(person)
 
     def hide_all_frames(self):
         for widget in App.winfo_children(self):
@@ -161,6 +170,7 @@ class KotFrame(ttk.Frame):
         with open("koters.json", "w") as w_json:
             try:
                 data["koters_list"].remove(koter)
+                json.dump(data, w_json, indent=4)
             except ValueError:
                 json.dump(data, w_json, indent=4)
 
