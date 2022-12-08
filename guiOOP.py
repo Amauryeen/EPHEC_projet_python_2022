@@ -17,7 +17,7 @@ class App(Tk):
     def get_kot(self):
         with open("koters.json", 'r') as json_r:
             data = json.load(json_r)
-            kot = Kot(data["kot_name"])
+            self.kot = Kot(data["kot_name"])
             for person in data["koters_list"]:
                 Person(person)
 
@@ -83,6 +83,15 @@ class App(Tk):
         info_frame.pack()
         self.create_menu()
 
+    def reset_kot(self):
+        with open("koters.json", "r") as json_r:
+            data = json.load(json_r)
+            with open("koters.json", "w") as json_w:
+                data.clear()
+                data = {"kot_name": "", "koters_list": [], "koters_balance": [], "common_pot": 0, "list_meal": []}
+                json.dump(data, json_w, indent=4)
+        self.create_welcome_frame()
+
     def create_welcome_frame(self):
         self.hide_all_frames()
         # label on main Frame
@@ -97,6 +106,8 @@ class App(Tk):
             else:
                 welcome_label = Label(self, text=f"Bienvenue dans le kot {data['kot_name']}", font="Calibri 15")
                 welcome_label.pack(expand=True)
+                reset_kot = ttk.Button(self, text=f"Reset le Kot", command=self.reset_kot)
+                reset_kot.pack(expand=True)
                 self.create_menu()
 
 
