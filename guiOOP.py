@@ -1,7 +1,6 @@
 import _tkinter
 from tkinter import *
 from tkinter import ttk
-from kotcount import *
 from tkinter.messagebox import showinfo
 
 
@@ -12,14 +11,6 @@ class App(Tk):
         self.title("KotCount")
         self.minsize(width=400, height=400)
         self.create_welcome_frame()
-
-    @staticmethod
-    def get_kot(self):
-        with open("koters.json", 'r') as json_r:
-            data = json.load(json_r)
-            kot = Kot(data["kot_name"])
-            for person in data["koters_list"]:
-                Person(person)
 
     def hide_all_frames(self):
         for widget in App.winfo_children(self):
@@ -133,7 +124,7 @@ class KotFrame(ttk.Frame):
                 self.koters_list.append(v)
 
     @staticmethod
-    def add_koter_to_json(self, koter):
+    def add_koter_to_json(koter):
         with open("koters.json", "r") as r_json:
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
@@ -153,18 +144,18 @@ class KotFrame(ttk.Frame):
         meal_frame.pack()
 
     def add_koter(self):
-        self.add_koter_to_json(self, self.koters_name.get())
+        self.add_koter_to_json(self.koters_name.get())
         show_koter = Label(app, text=self.koters_name.get())
         show_koter.pack()
         self.name_entry.delete(0, END)
 
     def delete_koter(self):
-        self.delete_koter_from_json(self, self.koter_to_delete.get())
+        self.delete_koter_from_json(self.koter_to_delete.get())
         self.koter_to_delete_entry.delete(0, END)
         app.create_kot_frame()
 
     @staticmethod
-    def delete_koter_from_json(self, koter):
+    def delete_koter_from_json(koter):
         with open("koters.json", "r") as r_json:
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
