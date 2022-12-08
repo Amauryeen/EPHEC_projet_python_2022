@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from kotcount import *
 from tkinter.messagebox import showinfo
+import os
 
 
 class App(Tk):
@@ -11,7 +12,14 @@ class App(Tk):
         # configure the window
         self.title("KotCount")
         self.minsize(width=400, height=400)
-        self.create_welcome_frame()
+        self.path_db = "koters.json"
+        if os.path.exists(self.path_db):
+            self.create_welcome_frame()
+        else:
+            with open(self.path_db, "w+") as json_file:
+                data = {"kot_name": "", "koters_list": [], "koters_balance": [], "common_pot": 0, "list_meal": []}
+                json.dump(data, json_file, indent=4)
+            self.create_welcome_frame()
 
     @staticmethod
     def get_kot(self):
