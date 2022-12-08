@@ -10,23 +10,37 @@
     ],
     "koters_balance": [
         {
-            "Martin": -21
+            "Martin": -36
         },
         {
-            "Max": -3
+            "Max": -21
         },
         {
-            "Sam": 0
+            "Sam": 24
         },
         {
-            "Gaetan": 21
+            "Gaetan": 12
         },
         {
-            "Basil": -6
+            "Basil": 12
         },
         {
             "Amaury": 9
         }
     ],
-    "common_pot": 0
+    "common_pot": 0,
+    "list_meal": [
+        {
+            "Cuisinier": "Gaetan",
+            "Inscrits": [
+                "Martin",
+                "Gaetan",
+                "Amaury"
+            ],
+            "Date/Type": "2022-12-08 / ",
+            "PrixTotal": 9,
+            "PrixCourse": 0,
+            "State_count": false
+        }
+    ]
 }

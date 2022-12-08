@@ -28,7 +28,7 @@ class App(Tk):
         for widget in MealFrame.winfo_children(self):
             widget.destroy()
         for widget in ListMealFrame.winfo_children(self):
-            widget.destroy()
+            widget.grid_forget()
 
     def create_menu(self):
         self.menubar = Menu(self)
@@ -199,6 +199,8 @@ class MealFrame(ttk.Frame):
             ttk.Button(self, text="Finaliser le repas", command=self.get_inscription).pack(pady=5)
 
     def get_inscription(self):
+        if self.selected_cook.get() is None or self.selected_meal.get() is None or self.selected_price is None:
+            showinfo(title="Attention", message="Veuillez remplir toutes les cases")
         copy_dict_inscription = {}
         is_cook_inscription = self.dict_inscription[self.selected_cook.get()].get()
         if self.selected_price.get() <= 0:
@@ -220,7 +222,16 @@ class MealFrame(ttk.Frame):
 
             with open("koters.json", "r") as json_r:
                 data = json.load(json_r)
+                inscrits = [name for name in data["koters_list"] if copy_dict_inscription[name][0] == 1]
                 with open("koters.json", "w") as json_w:
+                    data["list_meal"].append(
+                        {"Cuisinier": self.selected_cook.get(),
+                         "Inscrits": inscrits,
+                         "Date/Type": f"{datetime.date.today()} / {self.selected_meal.get()}",
+                         "PrixTotal": len(inscrits) * self.selected_price.get(),
+                         "PrixCourse": 0,
+                         "State_count": False
+                         })
                     for v in data["koters_balance"]:
                         name = list(v.keys())[0]
                         balance = list(v.values())[0]
@@ -243,26 +254,29 @@ class ListMealFrame(ttk.Frame):
         # headers
         Label(self, text='Inscrits').grid(row=0, column=1, padx=10)
         Label(self, text='Cuisinier').grid(row=0, column=2, padx=10)
-        Label(self, text='Prix total').grid(row=0, column=3, padx=10)
-        Label(self, text='Prix Course').grid(row=0, column=4, padx=10)
-        Label(self, text='Calcule').grid(row=0, column=5)
+        Label(self, text='Date/Type').grid(row=0, column=3, padx=10)
+        Label(self, text='Prix total').grid(row=0, column=4, padx=10)
+        Label(self, text='Prix Course').grid(row=0, column=5, padx=10)
+        Label(self, text='Calcule').grid(row=0, column=6, padx=10)
         # body
-        with open("koters.json", "r") as json_f:
-            data = json.load(json_f)
-            for i, v in enumerate(data["koters_balance"]):
-                name = list(v.keys())[0]
-                Label(self, text=name).grid(row=i + 1, column=0)
-                if self.inscription is None:
-                    continue
-                elif 'cook' in self.inscription[name]:
-                    if self.inscription[name][0] == 1:
+        with open("koters.json", "r") as json_r:
+            data = json.load(json_r)
+            with open("koters.json", "w") as json_w:
+                for i, v in enumerate(data["koters_balance"]):
+                    name = list(v.keys())[0]
+                    Label(self, text=name).grid(row=i + 1, column=0)
+                    if self.inscription is None:
+                        continue
+                    elif 'cook' in self.inscription[name]:
+                        if self.inscription[name][0] == 1:
+                            Label(self, text="Oui").grid(row=i + 1, column=1)
+                        else:
+                            ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
+                    elif self.inscription[name][0] == 1:
                         Label(self, text="Oui").grid(row=i + 1, column=1)
-                    else:
+                    elif self.inscription[name][0] == 0:
                         ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
-                elif self.inscription[name][0] == 1:
-                    Label(self, text="Oui").grid(row=i + 1, column=1)
-                elif self.inscription[name][0] == 0:
-                    ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
+                json.dump(data, json_w, indent=4)
 
 
 class InfoFrame(ttk.Frame):
@@ -289,6 +303,7 @@ class InfoFrame(ttk.Frame):
 
 
 if __name__ == "__main__":
+    import datetime
     import json
 
     app = App()
