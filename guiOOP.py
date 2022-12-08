@@ -33,7 +33,7 @@ class App(Tk):
 
         self.menubar.add_cascade(label="Application", menu=self.file_menu)
         self.file_menu.add_command(label="Accueil", command=self.create_welcome_frame)
-        self.file_menu.add_command(label="Quitter l'application", command=self.destroy)
+        self.file_menu.add_command(label="Quitter", command=self.destroy)
 
         self.menubar.add_cascade(label="Kot", menu=self.kot_menu)
         self.kot_menu.add_command(label="Créer", command=self.create_kot_frame)
@@ -80,7 +80,7 @@ class App(Tk):
         with open("koters.json", "r") as json_f:
             data = json.load(json_f)
             if data["kot_name"] == "":
-                welcome_label = Label(self, text="Bienvenue sur kotcount", font="Calibri 15")
+                welcome_label = Label(self, text="Bienvenue sur KotCount", font="Calibri 15")
                 welcome_label.pack()
                 welcome_button = ttk.Button(self, text="Créer un kot", command=self.create_kot_frame)
                 welcome_button.pack(expand=True)
@@ -102,13 +102,13 @@ class KotFrame(ttk.Frame):
         self.kot_name_label.grid(column=0, row=0)
         self.kot_name_entry = ttk.Entry(self, textvariable=self.kot_name)
         self.kot_name_entry.grid(column=0, row=1)
-        self.name_label = Label(self, text="Ajoute un koteur")
+        self.name_label = Label(self, text="Ajouter un membre")
         self.name_label.grid(column=0, row=2)
         self.name_entry = ttk.Entry(self, textvariable=self.koters_name)
         self.name_entry.grid(column=0, row=3)
         self.add_button = ttk.Button(self, text="Ajouter", command=self.add_koter)
         self.add_button.grid(column=3, row=3, padx=5)
-        self.koter_to_delete_label = Label(self, text="Supprime un koteur")
+        self.koter_to_delete_label = Label(self, text="Supprimer un membre")
         self.koter_to_delete_label.grid(column=0, row=4)
         self.koter_to_delete_entry = ttk.Entry(self, textvariable=self.koter_to_delete)
         self.koter_to_delete_entry.grid(column=0, row=5)
@@ -168,7 +168,7 @@ class KotFrame(ttk.Frame):
 class MealFrame(ttk.Frame):
     def __init__(self, container):
         super().__init__(container)
-        self.cook_label = Label(self, text="Choisir le cuisinier")
+        self.cook_label = Label(self, text="Cuisinier")
         self.cook_label.pack()
         self.selected_cook = StringVar()
         self.selected_meal = StringVar()
@@ -186,7 +186,7 @@ class MealFrame(ttk.Frame):
                          state="readonly").pack()
             Label(self, text="Prix").pack()
             ttk.Entry(self, textvariable=self.selected_price).pack()
-            Label(self, text="S'inscrire : ", font='Calibri 14 underline').pack()
+            Label(self, text="Inscription des membres : ", font='Calibri 14 underline').pack()
             for v in data["koters_list"]:
                 self.dict_inscription[v] = IntVar()
                 ttk.Checkbutton(self, text=v, variable=self.dict_inscription[v], offvalue=0, onvalue=1).pack(anchor="w",
@@ -204,7 +204,7 @@ class MealFrame(ttk.Frame):
         copy_dict_inscription = {}
         is_cook_inscription = self.dict_inscription[self.selected_cook.get()].get()
         if self.selected_price.get() <= 0:
-            showinfo(title="Attention", message="le prix du repas doit être un entiers positifs")
+            showinfo(title="Attention", message="Le prix du repas doit être un entier positif")
         else:
             self.dict_inscription[self.selected_cook.get()] = 0
             copy_dict_inscription[self.selected_cook.get()] = [is_cook_inscription, 'cook']
