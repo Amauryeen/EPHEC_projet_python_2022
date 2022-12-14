@@ -276,7 +276,7 @@ class ListMealFrame(ttk.Frame):
         Label(self, text='Inscrits').grid(row=0, column=1, padx=10)
         Label(self, text='Cuisinier').grid(row=0, column=2, padx=10)
         Label(self, text='Date/Type').grid(row=0, column=3, padx=10)
-        Label(self, text='Prix total').grid(row=0, column=4, padx=10)
+        Label(self, text='Prix Total').grid(row=0, column=4, padx=10)
         Label(self, text='Prix Course').grid(row=0, column=5, padx=10)
         Label(self, text='Calcul').grid(row=0, column=6, padx=10)
         # body
