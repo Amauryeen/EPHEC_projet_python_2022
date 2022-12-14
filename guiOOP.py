@@ -278,7 +278,7 @@ class ListMealFrame(ttk.Frame):
         Label(self, text='Date/Type').grid(row=0, column=3, padx=10)
         Label(self, text='Prix total').grid(row=0, column=4, padx=10)
         Label(self, text='Prix Course').grid(row=0, column=5, padx=10)
-        Label(self, text='Calcule').grid(row=0, column=6, padx=10)
+        Label(self, text='Calcul').grid(row=0, column=6, padx=10)
         # body
         with open("koters.json", "r") as json_r:
             data = json.load(json_r)
@@ -297,6 +297,15 @@ class ListMealFrame(ttk.Frame):
                         Label(self, text="Oui").grid(row=i + 1, column=1)
                     elif self.inscription[name][0] == 0:
                         ttk.Button(self, text="S'inscrire").grid(row=i + 1, column=1)
+
+                    if data['list_meal'][0]['Cuisinier'] == name:
+                        Label(self, text="*").grid(row=i + 1, column=2)
+
+                    Label(self, text=data['list_meal'][0]['Date/Type']).grid(row=i + 1, column=3)
+                    Label(self, text=v[name]).grid(row=i + 1, column=4)
+                    Label(self, text=data['list_meal'][0]['PrixCourse']).grid(row=i + 1, column=5)
+                    Label(self, text=v[name] + data['list_meal'][0]['PrixCourse']).grid(row=i + 1, column=6)
+
                 json.dump(data, json_w, indent=4)
 
 
