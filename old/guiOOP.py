@@ -1,7 +1,7 @@
 import _tkinter
 from tkinter import *
 from tkinter import ttk
-from kotcount import *
+from old.kotcount import *
 from tkinter.messagebox import showinfo
 import os
 
