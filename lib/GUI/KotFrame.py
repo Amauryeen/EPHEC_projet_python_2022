@@ -43,7 +43,7 @@ class KotFrame(ttk.Frame):
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
             data["koters_list"].append(koter)
-            data["koters_balance"].append({koter: 0})
+            data["koters_balance"].append({"name": koter, "balance": 0})
             json.dump(data, w_json, indent=4)
 
     def create_kot(self):
@@ -66,7 +66,7 @@ class KotFrame(ttk.Frame):
     def delete_koter(self):
         self.delete_koter_from_json(self.koter_to_delete.get())
         self.koter_to_delete_entry.delete(0, END)
-        app.create_kot_frame()
+        self.app.create_kot_frame()
 
     @staticmethod
     def delete_koter_from_json(koter):
@@ -75,6 +75,9 @@ class KotFrame(ttk.Frame):
         with open("koters.json", "w") as w_json:
             try:
                 data["koters_list"].remove(koter)
+                for i in range(len(data["koters_balance"])-1):
+                    if data["koters_balance"][i]["name"] == koter:
+                        del data["koters_balance"][i]
                 json.dump(data, w_json, indent=4)
             except ValueError:
                 json.dump(data, w_json, indent=4)
