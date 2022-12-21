@@ -76,10 +76,7 @@ class MealFrame(ttk.Frame):
                          "State_count": False
                          })
                     for v in data["koters_balance"]:
-                        name = list(v.keys())[0]
-                        balance = list(v.values())[0]
-                        balance += self.dict_inscription[name]
-                        v.update({name: balance})
+                        v["balance"] += self.dict_inscription[v["name"]]
                     json.dump(data, json_w, indent=4)
             self.app.hide_all_frames()
             self.app.create_menu()

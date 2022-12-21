@@ -7,6 +7,7 @@ class ListMealFrame(ttk.Frame):
     def __init__(self, container, list_inscription):
         super().__init__(container)
         self.inscription = list_inscription
+        print(self.inscription)
         self.create_widgets()
 
     def create_widgets(self):
@@ -17,12 +18,13 @@ class ListMealFrame(ttk.Frame):
         Label(self, text='Prix Total').grid(row=0, column=4, padx=10)
         Label(self, text='Prix Course').grid(row=0, column=5, padx=10)
         Label(self, text='Calcul').grid(row=0, column=6, padx=10)
+        ttk.Button(self, text="calculez").grid(row=1, column=6)
         # body
         with open("koters.json", "r") as json_r:
             data = json.load(json_r)
             with open("koters.json", "w") as json_w:
                 for i, v in enumerate(data["koters_balance"]):
-                    name = list(v.keys())[0]
+                    name = v["name"]
                     Label(self, text=name).grid(row=i + 1, column=0)
                     if self.inscription is None:
                         continue
@@ -40,8 +42,7 @@ class ListMealFrame(ttk.Frame):
                         Label(self, text="*").grid(row=i + 1, column=2)
 
                     Label(self, text=data['list_meal'][0]['Date/Type']).grid(row=i + 1, column=3)
-                    Label(self, text=v[name]).grid(row=i + 1, column=4)
+                    Label(self, text=data["list_meal"][0]["PrixTotal"]).grid(row=i + 1, column=4)
                     Label(self, text=data['list_meal'][0]['PrixCourse']).grid(row=i + 1, column=5)
-                    Label(self, text=v[name] + data['list_meal'][0]['PrixCourse']).grid(row=i + 1, column=6)
 
                 json.dump(data, json_w, indent=4)
