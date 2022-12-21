@@ -2,7 +2,6 @@ from tkinter import *
 import _tkinter
 from tkinter import ttk
 import json
-from main import *
 from tkinter.messagebox import showinfo
 import datetime
 from lib.GUI.ListMealFrame import ListMealFrame
@@ -19,6 +18,7 @@ class MealFrame(ttk.Frame):
         self.groceries_cost = IntVar()
         self.dict_inscription = {}
         self.create_widget()
+        self.app = container
 
     def create_widget(self):
         with open("koters.json", "r") as json_f:
@@ -81,7 +81,7 @@ class MealFrame(ttk.Frame):
                         balance += self.dict_inscription[name]
                         v.update({name: balance})
                     json.dump(data, json_w, indent=4)
-            app.hide_all_frames()
-            app.create_menu()
-            list_meal_frame = ListMealFrame(app, dict(copy_dict_inscription))
+            self.app.hide_all_frames()
+            self.app.create_menu()
+            list_meal_frame = ListMealFrame(self.app, dict(copy_dict_inscription))
             list_meal_frame.pack()

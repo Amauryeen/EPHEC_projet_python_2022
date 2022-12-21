@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 import json
-from main import *
 from lib.GUI.MealFrame import MealFrame
 
 
@@ -30,6 +29,7 @@ class KotFrame(ttk.Frame):
         self.delete_button.grid(column=3, row=5, padx=5)
         self.create_button = ttk.Button(self, text="Créer", command=self.create_kot)
         self.create_button.grid(column=3, row=1, padx=5)
+        self.app = container
 
     def get_data_from_json(self):
         with open("koters.json", "r") as json_f:
@@ -52,14 +52,14 @@ class KotFrame(ttk.Frame):
         with open("koters.json", "w") as w_json:
             data["kot_name"] = self.kot_name.get()
             json.dump(data, w_json, indent=4)
-        app.hide_all_frames()
-        app.create_menu()
-        meal_frame = MealFrame(app)
+        self.app.hide_all_frames()
+        self.app.create_menu()
+        meal_frame = MealFrame(self.app)
         meal_frame.pack()
 
     def add_koter(self):
         self.add_koter_to_json(self.koters_name.get())
-        show_koter = Label(app, text=self.koters_name.get())
+        show_koter = Label(self.app, text=self.koters_name.get())
         show_koter.pack()
         self.name_entry.delete(0, END)
 
