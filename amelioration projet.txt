@@ -1,7 +1,0 @@
-rembourser les personne avec le plus petit solde négatif avec les ceux qui doivent le moins d'argent
-
-
----> UML 
-repas ---> + methode et attributs
-inscription ---> repas
-classe gestion frais ---> modifie solde en fonction de l'inscription
