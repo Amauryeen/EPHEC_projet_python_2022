@@ -67,13 +67,14 @@ class MealFrame(ttk.Frame):
                 data = json.load(json_r)
                 inscrits = [name for name in data["koters_list"] if copy_dict_inscription[name][0] == 1]
                 with open("koters.json", "w") as json_w:
-                    data["list_meal"].append(
-                        {"Cuisinier": self.selected_cook.get(),
-                         "Inscrits": inscrits,
-                         "Date/Type": f"{datetime.date.today()} / {self.selected_meal.get()}",
-                         "PrixTotal": len(inscrits) * self.selected_price.get(),
-                         "PrixCourse": 0,
-                         "State_count": False
+                    data["list_meal"].append({
+                         "id": len(data["list_meal"]),
+                         "cook": self.selected_cook.get(),
+                         "inscription": inscrits,
+                         "date/type": f"{datetime.date.today()} / {self.selected_meal.get()}",
+                         "total_price": len(inscrits) * self.selected_price.get(),
+                         "grocery_price": 0,
+                         "state_count": False
                          })
                     for v in data["koters_balance"]:
                         v["balance"] += self.dict_inscription[v["name"]]
