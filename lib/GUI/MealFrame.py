@@ -21,6 +21,12 @@ class MealFrame(ttk.Frame):
         self.app = container
 
     def create_widget(self):
+        """
+         Method that creates widgets.
+
+         PRE: should have koters.json
+         POST:show the widgets in the frame
+         """
         with open("koters.json", "r") as json_f:
             data = json.load(json_f)
             ttk.Combobox(self, textvariable=self.selected_cook, values=data["koters_list"], state="readonly").pack()
@@ -37,6 +43,11 @@ class MealFrame(ttk.Frame):
             ttk.Button(self, text="Finaliser le repas", command=self.get_inscription).pack(pady=5)
 
     def get_inscription(self):
+        """get the information from the form to add it into the json file
+
+        PRE: Should have koters.json
+        POST:show the list meal frame
+        """
         try:
             if self.selected_cook.get() == '' or self.selected_meal.get() == '' or self.selected_price.get() == "":
                 showinfo(title="Attention", message="Veuillez remplir toutes les cases")
@@ -68,14 +79,14 @@ class MealFrame(ttk.Frame):
                 inscrits = [name for name in data["koters_list"] if copy_dict_inscription[name][0] == 1]
                 with open("koters.json", "w") as json_w:
                     data["list_meal"].append({
-                         "id": len(data["list_meal"]),
-                         "cook": self.selected_cook.get(),
-                         "inscription": inscrits,
-                         "date/type": f"{datetime.date.today()} / {self.selected_meal.get()}",
-                         "total_price": len(inscrits) * self.selected_price.get(),
-                         "grocery_price": 0,
-                         "state_count": False
-                         })
+                        "id": len(data["list_meal"]),
+                        "cook": self.selected_cook.get(),
+                        "inscription": inscrits,
+                        "date/type": f"{datetime.date.today()} / {self.selected_meal.get()}",
+                        "total_price": len(inscrits) * self.selected_price.get(),
+                        "grocery_price": 0,
+                        "state_count": False
+                    })
                     for v in data["koters_balance"]:
                         v["balance"] += self.dict_inscription[v["name"]]
                     json.dump(data, json_w, indent=4)

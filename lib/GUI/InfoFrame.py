@@ -10,10 +10,16 @@ class InfoFrame(ttk.Frame):
         self.create_widgets()
 
     @staticmethod
-    def get_min_balance_positive(dict_balance):
+    def get_min_balance_positive(list_balance):
+        """
+        get the minimum positive balance from a list
+
+        PRE: need a list of person and their balance
+        POST: return a list containing the name and the balance which is the lowest in the positive
+        """
         min_balance = 999999
         min_person = ""
-        for each in dict_balance:
+        for each in list_balance:
             if each["balance"] > 0:
                 if each["balance"] <= min_balance:
                     min_balance = each["balance"]
@@ -21,10 +27,16 @@ class InfoFrame(ttk.Frame):
         return [min_person, min_balance]
 
     @staticmethod
-    def get_min_balance_negative(dict_balance):
+    def get_min_balance_negative(list_balance):
+        """
+        get the minimum negative balance from a list
+
+        PRE:need a list of person and their balance
+        POST: return a list containing the name and the balance which is the lowest in the negative
+        """
         min_negative_balance = -99999
         min_negative_person = ""
-        for each in dict_balance:
+        for each in list_balance:
             if each["balance"] < 0:
                 if each["balance"] >= min_negative_balance:
                     min_negative_balance = each["balance"]
@@ -32,6 +44,12 @@ class InfoFrame(ttk.Frame):
         return [min_negative_person, min_negative_balance]
 
     def check_to_balance(self, list_person_and_balance):
+        """
+        make a checkout to reimburse everyone
+
+        PRE: list of person and their balance
+        POST: return a list containing strings that says who needs to reimburse who
+        """
         person_and_balance: list = list_person_and_balance
         list_of_reimbursement = []
         while len(person_and_balance) != 0:
@@ -63,6 +81,12 @@ class InfoFrame(ttk.Frame):
         return list_of_reimbursement
 
     def create_widgets(self):
+        """
+        Method that creates the widgets
+
+        PRE:The file koter.json should exist.
+        POST:The state of self changes and the layout of the app.
+        """
         Label(self, text='Virement à effectuer', font="Calibri 14 underline").grid(row=0, column=1, padx=10)
         Label(self, text="Pot Commun", font="Calibri 14 underline").grid(row=0, column=3, padx=10)
         with open("koters.json", "r") as json_f:
@@ -74,6 +98,12 @@ class InfoFrame(ttk.Frame):
             reset_btn.grid(row=len(data["koters_list"]) + 1, columnspan=3)
 
     def reimburse_reset(self):
+        """
+        reset the balance and meal history from koters.json
+
+        PRE: Should have koters.json
+        POST: return to welcome frame
+        """
         with open("koters.json", "r") as json_f:
             data = json.load(json_f)
             with open("koters.json", "w") as json_w:

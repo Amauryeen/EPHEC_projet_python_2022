@@ -15,6 +15,13 @@ class ListMealFrame(ttk.Frame):
         self.create_widgets()
 
     def calculate(self, id_meal):
+        """
+        calculate the difference between the total price for meals and the cost of the groceries
+        and add the difference to the common pot.
+
+        PRE: get called by button event
+        POST: calculate the common pot
+        """
         with open("koters.json", "r") as json_r:
             data = json.load(json_r)
             with open("koters.json", "w") as json_w:
@@ -33,6 +40,13 @@ class ListMealFrame(ttk.Frame):
             self.create_widgets()
 
     def create_widgets(self):
+        """
+         Method that creates widgets.
+
+         PRE : koter.json should exist.
+
+         POST: the state of self will change.
+         """
         # headers
         Label(self, text='Inscrits').grid(row=0, column=1, padx=10)
         Label(self, text='Cuisinier').grid(row=0, column=2, padx=10)
@@ -77,6 +91,12 @@ class ListMealFrame(ttk.Frame):
                 json.dump(data, json_w, indent=4)
 
     def reimburse(self):
+        """
+        create the infoframe menu on button click
+        PRE:
+        POST:show the info frame
+
+        """
         self.app.hide_all_frames()
         self.app.create_menu()
         info_frame = InfoFrame(self.app)

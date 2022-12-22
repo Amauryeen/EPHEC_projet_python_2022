@@ -39,6 +39,16 @@ class KotFrame(ttk.Frame):
 
     @staticmethod
     def add_koter_to_json(koter):
+        """
+        Method that adds a koter to the JSON file.
+
+        PRE:
+            The parameter koter should be specified.
+
+        POST:
+            The koter given in parameter will be  added to the JSON file
+
+        """
         with open("koters.json", "r") as r_json:
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
@@ -47,6 +57,16 @@ class KotFrame(ttk.Frame):
             json.dump(data, w_json, indent=4)
 
     def create_kot(self):
+        """
+        Method that creats a kot.
+
+        PRE:
+
+        POST:
+        The app's "layout" changes.
+
+
+        """
         with open("koters.json", "r") as r_json:
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
@@ -58,18 +78,45 @@ class KotFrame(ttk.Frame):
         meal_frame.pack()
 
     def add_koter(self):
+        """
+        Method that adds a koter.
+
+        PRE:
+
+        POST:
+            The koter will  be displayed in the app.
+        """
         self.add_koter_to_json(self.koters_name.get())
         show_koter = Label(self.app, text=self.koters_name.get())
         show_koter.pack()
         self.name_entry.delete(0, END)
 
     def delete_koter(self):
+        """
+         Method that deletes a koter.
+
+         PRE:
+
+         POST:
+             The koter will not be displayed in the app.
+         """
         self.delete_koter_from_json(self.koter_to_delete.get())
         self.koter_to_delete_entry.delete(0, END)
         self.app.create_kot_frame()
 
     @staticmethod
     def delete_koter_from_json(koter):
+        """
+        Method that deletes a koter from the JSON file.
+
+        PRE:
+            The parameter koter should be specified.
+
+        POST:
+            The koter given in parameter will be  deleted from the JSON file.
+            RAISE : Exception (ValueError) if there is a problem with the value.
+
+        """
         with open("koters.json", "r") as r_json:
             data = json.load(r_json)
         with open("koters.json", "w") as w_json:
